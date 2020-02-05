@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
 
     public LayerMask GroundLayer;
     public Vector3 maxDistance;
@@ -44,10 +44,10 @@ public class PlayerController : MonoBehaviour
     private bool CheckGrounded()
     {
         colliders = Physics.OverlapBox(transform.position, maxDistance, Quaternion.identity, GroundLayer);
+
         if (colliders.Length>0)
-        {
             return true;
-        }
+
         return false;
     }
 }

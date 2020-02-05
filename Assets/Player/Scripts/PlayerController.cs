@@ -31,9 +31,10 @@ public class PlayerController : MonoBehaviour
 
         if (jump)
         {
+            
             moveDir.y += jumpSpeed;
         }
-
+        
         if (CheckGrounded())
         {
             rigidbody.velocity = moveDir;

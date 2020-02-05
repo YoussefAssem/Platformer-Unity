@@ -7,6 +7,9 @@ public class PlayerUserController : MonoBehaviour
 {
     private PlayerController playerController;
     private Vector3 moveDir;
+
+    private float horizontal;
+    private float vertical;
     private bool jump;
 
     void Start()
@@ -16,17 +19,12 @@ public class PlayerUserController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        if (!jump)
-        {
-            jump = Input.GetButtonDown("Jump");
-        }
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
+        jump = Input.GetButton("Jump");
 
         moveDir = new Vector3(horizontal,0,vertical);
 
         playerController.Move(moveDir, jump);
-        jump = false;
     }
 }

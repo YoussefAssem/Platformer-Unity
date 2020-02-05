@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Coin
   - Waypoint
+  - EndGoal
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - 
   - Ground
-  - Waypoint
+  - 
   - 
   - 
   - 

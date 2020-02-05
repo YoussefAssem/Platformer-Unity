@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     private new Rigidbody rigidbody;
+    private AudioSource audioSource;
 
     public LayerMask GroundLayer;
     public Vector3 maxDistance;
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Move(Vector3 moveDir, bool jump)
@@ -49,5 +52,24 @@ public class PlayerController : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        else if (other.CompareTag("Coin"))
+        {
+            print("collect");
+
+            Destroy(other.gameObject);
+            audioSource.Play();
+        }
+        else if (other.CompareTag("EndGoal"))
+        {
+            print("Done");
+        }
     }
 }

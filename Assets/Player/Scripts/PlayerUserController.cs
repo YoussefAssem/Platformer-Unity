@@ -21,7 +21,7 @@ public class PlayerUserController : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-        jump = Input.GetButton("Jump");
+        jump = Input.GetButtonDown("Jump");
 
         moveDir = new Vector3(horizontal,0,vertical);
 

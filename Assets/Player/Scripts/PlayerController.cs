@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float jumpSpeed;
 
+    private bool lastGrounded = true;
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -25,23 +26,33 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector3 moveDir, bool jump)
     {
         moveDir.Normalize();
+
         if (moveDir.magnitude != 0)
-        {
             transform.forward = moveDir;
-        }
+
         moveDir *= moveSpeed;
         moveDir.y = rigidbody.velocity.y;
 
-        if (jump)
-        {
-            
+        if (jump)            
             moveDir.y += jumpSpeed;
-        }
-        
+
         if (CheckGrounded())
-        {
-            rigidbody.velocity = moveDir;
-        }
+            GroundedMovmentHandling(moveDir);
+
+        else if (lastGrounded && moveDir.x+moveDir.z !=0)
+            AirialMovmentHandling(moveDir);
+    }
+
+    private void GroundedMovmentHandling(Vector3 moveDir)
+    {
+        lastGrounded = true;
+        rigidbody.velocity = moveDir;
+    }
+
+    private void AirialMovmentHandling(Vector3 moveDir)
+    {
+        lastGrounded = false;
+        rigidbody.AddForce(moveDir.x / moveSpeed, 0, moveDir.z / moveSpeed, ForceMode.Impulse);
     }
 
     private bool CheckGrounded()
@@ -57,19 +68,18 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+            GameManager.gameManager.GameOver();
+
+        else if (other.CompareTag("EndGoal"))
+            GameManager.gameManager.LevelEnd();
+
         else if (other.CompareTag("Coin"))
         {
-            print("collect");
+            GameManager.gameManager.AddScore(10);
 
             Destroy(other.gameObject);
             audioSource.Play();
         }
-        else if (other.CompareTag("EndGoal"))
-        {
-            print("Done");
-        }
+
     }
 }
